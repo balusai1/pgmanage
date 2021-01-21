@@ -18,18 +18,22 @@ conn = psycopg2.connect(
     database='postgres',
     user=pguser,
     password=pgpassword)
+conn.autocommit = True
+cur = conn.cursor()
 
 def createRole(user,password):
     print(conn,user,password)
-    conn.close()
-    print("Connection closed")
-    conn
+    cur.execute(f"""
+    CREATE ROLE {user} with NOCREATEDB LOGIN ENCRYPTED PASSWORD '{password}';""")
+    return ;
 
 def createUsers():
     username= sys.argv[1]
     paswd= sys.argv[2]
     print(username,paswd)
     createRole(username,paswd)
+    conn.close()
+    print("Connection closed")
 
 createUsers()
 
