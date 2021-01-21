@@ -5,6 +5,7 @@
 # * Remove the userfrom pg_users_active.csv
 import sys
 import psycopg2
+import pwd
 
 host='localhost'
 port='5433'
@@ -18,6 +19,13 @@ conn = psycopg2.connect(
     password=pgpassword)
 conn.autocommit = True
 cur = conn.cursor()
+
+
+def deleteDB(username):
+    try:
+        pwd.getpwnam('someusr')
+    except KeyError:
+        print('User someusr does not exist.')
 
 def deleteRole(user,password):
     print(conn,user,password)
