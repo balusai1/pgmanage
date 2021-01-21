@@ -7,6 +7,7 @@
 # * Add username to a pg_users_active.csv
 import sys
 import psycopg2
+import os
 
 database_list=['database1','db2','db3']
 host='localhost'
@@ -23,7 +24,6 @@ conn.autocommit = True
 cur = conn.cursor()
 
 def createRole(user,password):
-    print(conn,user,password)
     cur.execute(f"""
     CREATE ROLE {user} with NOCREATEDB LOGIN ENCRYPTED PASSWORD '{password}';""")
     return ;
@@ -33,13 +33,13 @@ def CreateDB(username,paswd):
         cur.execute("CREATE DATABASE " + str(username)+"_"+str(i))
 
 def createUsers():
+    list =open("users_list.csv","a")
     username= sys.argv[1]
     paswd= sys.argv[2]
-    print(username,paswd)
     createRole(username,paswd)
     CreateDB(username,paswd)
     conn.close()
     print("Connection closed")
-    print(username+","+paswd)
-
+    list.write(username+","+paswd+"\n")
+    list.close()
 createUsers()
