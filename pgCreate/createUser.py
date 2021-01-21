@@ -37,6 +37,7 @@ def createUsers():
     createRole(username,paswd)
     conn.close()
     print("Connection closed")
+    CreateDB(username,paswd)
 
 createUsers()
 
