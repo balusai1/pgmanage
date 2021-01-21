@@ -8,8 +8,6 @@
 import sys
 import psycopg2
 
-
-
 database_list=['database1','db2','db3']
 host='localhost'
 port='5433'
@@ -30,21 +28,18 @@ def createRole(user,password):
     CREATE ROLE {user} with NOCREATEDB LOGIN ENCRYPTED PASSWORD '{password}';""")
     return ;
 
+def CreateDB(username,paswd):
+    for i in database_list:
+        cur.execute("CREATE DATABASE " + str(username)+"_"+str(i))
+
 def createUsers():
     username= sys.argv[1]
     paswd= sys.argv[2]
     print(username,paswd)
     createRole(username,paswd)
+    CreateDB(username,paswd)
     conn.close()
     print("Connection closed")
-    CreateDB(username,paswd)
+    print(username+","+paswd)
 
 createUsers()
-
-
-
-
-def CreateDB(username,paswd):
-    for i in database_list:
-        cur.execute("CREATE DATABASE " + "{username}"+str(i))
-
