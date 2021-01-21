@@ -8,6 +8,9 @@
 import sys
 import psycopg2
 
+
+
+database_list=['database1','db2','db3']
 host='localhost'
 port='5433'
 pguser='admin'
@@ -37,4 +40,10 @@ def createUsers():
 
 createUsers()
 
-# CreateDB(username,paswd)
+
+
+
+def CreateDB(username,paswd):
+    for i in database_list:
+        cur.execute("CREATE DATABASE " + "{username}"+str(i))
+
