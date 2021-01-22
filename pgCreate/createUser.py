@@ -33,13 +33,17 @@ def CreateDB(username,paswd):
         cur.execute("CREATE DATABASE " + str(username)+"_"+str(i))
 
 def createUsers():
-    list =open("users_list.csv","a")
     username= sys.argv[1]
     paswd= sys.argv[2]
     createRole(username,paswd)
     CreateDB(username,paswd)
     conn.close()
+    with open("users_list.csv","a+") as list:
+            list.seek(0)
+            data = list.read(100)
+            if len(data) > 0 :
+                list.write("\n")
+            list.write(f'{username},{paswd}')
     print("Connection closed")
-    list.write(username+","+paswd+"\n")
     list.close()
 createUsers()

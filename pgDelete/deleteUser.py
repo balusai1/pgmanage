@@ -11,34 +11,38 @@ host='localhost'
 port='5433'
 pguser='admin'
 pgpassword='hNg9X7CYcDLv'
+database_list=['database1','db2','db3']
 conn = psycopg2.connect(
     host=host,
     port=port,
     database='postgres',
     user=pguser,
     password=pgpassword)
-conn.autocommit = True
-cur = conn.cursor()
 
-
-def deleteDB(username):
+def deleteRole(user,cur):
     try:
-        pwd.getpwnam('someusr')
-    except KeyError:
-        print('User someusr does not exist.')
+      cur.execute(f'DROP ROLE {user};')
+    except:
+      return
 
-def deleteRole(user,password):
-    print(conn,user,password)
-    cur.execute(f"""
-    DROP ROLE {user};""")
-    return ;
+def deleteDb(user,cur):
+    for i in database_list:
+        try:
+          cur.execute("DROP DATABASE " + str(user)+"_"+str(i))
+        except:
+            continue
 
 def deleteUsers():
-    username=
-    print(username)
-    deleteRole(username)
-    conn.close()
-    print("Connection closed")
-    deleteDB(username)
+    with open("users_list.csv") as users_list:
+        conn.autocommit = True
+        cur = conn.cursor()
+        for userdetails in users_list:
+            user=userdetails.split(",")[0]
+            try:
+              user_id=pwd.getpwnam(user)
+            except:
+              deleteDb(user,cur)
+              deleteRole(user,cur)
+        conn.close()
 
 deleteUsers()
