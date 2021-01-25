@@ -6,6 +6,7 @@
 import sys
 import psycopg2
 import pwd
+import csv  
 
 host='localhost'
 port='5433'
@@ -32,6 +33,23 @@ def deleteDb(user,cur):
         except:
             continue
 
+def deleteList(user):
+  lines = list()
+  username=(user)
+
+  with open('users_list.csv', 'r') as readFile:
+    reader = csv.reader(readFile)
+    for row in reader:
+        lines.append(row)
+        for field in row:
+            if field == username:
+                lines.remove(row)
+  
+  with open('users_list.csv', 'w') as writeFile:
+    writer = csv.writer(writeFile)
+    writer.writerows(lines)
+
+
 def deleteUsers():
     with open("users_list.csv") as users_list:
         conn.autocommit = True
@@ -44,5 +62,5 @@ def deleteUsers():
               deleteDb(user,cur)
               deleteRole(user,cur)
         conn.close()
-
+        deleteList(user)
 deleteUsers()
