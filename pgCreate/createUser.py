@@ -9,11 +9,12 @@ import sys
 import psycopg2
 import os
 
-database_list=['database1','db2','db3']
+database_list=['hr_db','sms_db','retail_db']
+database_user_list=['hr_user','sms_user','retail_user']
 host='localhost'
 port='5433'
-pguser='admin'
-pgpassword='hNg9X7CYcDLv'
+pguser='pgadmin'
+pgpassword='xmL9FkR9xHrx'
 conn = psycopg2.connect(
     host=host,
     port=port,
@@ -24,8 +25,9 @@ conn.autocommit = True
 cur = conn.cursor()
 
 def createRole(user,password):
-    cur.execute(f"""
-    CREATE ROLE {user} with NOCREATEDB LOGIN ENCRYPTED PASSWORD '{password}';""")
+    for i in database_user_list:
+      cur.execute(f"""
+      CREATE ROLE {user}_{i} with NOCREATEDB LOGIN ENCRYPTED PASSWORD '{password}';""")
     return ;
 
 def CreateDB(username,paswd):
