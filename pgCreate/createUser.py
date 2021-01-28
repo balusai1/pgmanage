@@ -30,9 +30,9 @@ def createRole(user,password):
       CREATE ROLE {user}_{i} with NOCREATEDB LOGIN ENCRYPTED PASSWORD '{password}';""")
     return ;
 
-def CreateDB(username,paswd):
+def CreateDB(user,paswd):
     for i in database_list:
-        cur.execute("CREATE DATABASE " + str(username)+"_"+str(i))
+        cur.execute(f"""CREATE DATABASE {user}_{i};""")
 
 def createUsers():
     username= sys.argv[1]
