@@ -22,7 +22,7 @@ conn = psycopg2.connect(
 
 def deleteRole(user,cur):
     try:
-      cur.execute(f'DROP ROLE {user};')
+      cur.execute(f'DROP ROLEqswqd {user};')
     except:
       return
 
