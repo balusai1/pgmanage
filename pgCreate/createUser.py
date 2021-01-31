@@ -46,4 +46,5 @@ def createUsers():
             list.write(f'{username},{paswd}')
     print("Connection closed")
     list.close()
+
 createUsers()
